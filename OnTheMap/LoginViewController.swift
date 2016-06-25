@@ -48,18 +48,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     private func login() {
         if let username = emailTextField.text, password = passwordTextField.text {
             
-            UdacityClient.sharedInstance().logInWithUsername(username, password: password, completionHandler: {
-                (result, error) in
-                
-                if error == nil {
-                    dispatch_async(dispatch_get_main_queue()) {
+                UdacityClient.logIn(username, password: password) { (success, errorMessage) in
+                    if success {
                         self.performSegueWithIdentifier(StoryboardSegue.kSegueToTabBar, sender: self)
+                    } else {
+                        print(errorMessage)
                     }
-                } else {
-                    print("There was a login error")
                 }
-                
-            })
         }
         
         emailTextField.resignFirstResponder()

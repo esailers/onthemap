@@ -31,7 +31,6 @@ extension UdacityClient {
     
     // MARK: HeaderKeys
     
-    /*
     struct HeaderKeys {
         static let Accept = "Accept"
         static let ContentType = "Content-Type"
@@ -43,7 +42,6 @@ extension UdacityClient {
     struct HeaderValues {
         static let JSON = "application/json"
     }
-    */
     
     // MARK: HTTPBodyKeys
     
@@ -53,11 +51,18 @@ extension UdacityClient {
         static let Password = "password"
     }
     
+    // MARK: HTTPMethods
+    
+    struct HTTPMethods {
+        static let GET = "GET"
+        static let POST = "POST"
+    }
+    
     // MARK: JSONResponseKeys
     
     struct JSONResponseKeys {
         static let Account = "account"
-        static let UserKey = "key"
+        static let StudentKey = "key"
         static let Status = "status"
         static let Session = "session"
         static let Error = "error"
