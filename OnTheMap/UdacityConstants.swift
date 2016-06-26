@@ -29,6 +29,12 @@ extension UdacityClient {
         static let Users = "/users"
     }
     
+    // MARK: Cookies
+    
+    struct Cookies {
+        static let XSRFToken = "XSRF-TOKEN"
+    }
+    
     // MARK: HeaderKeys
     
     struct HeaderKeys {

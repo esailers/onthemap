@@ -69,7 +69,7 @@ class UdacityClient {
         var xsrfCookie: NSHTTPCookie? = nil
         let sharedCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
         for cookie in sharedCookieStorage.cookies! as [NSHTTPCookie] {
-            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
+            if cookie.name == Cookies.XSRFToken { xsrfCookie = cookie }
         }
         if let xsrfCookie = xsrfCookie {
             request.addValue(xsrfCookie.value, forHTTPHeaderField: HeaderKeys.XSRFToken)
