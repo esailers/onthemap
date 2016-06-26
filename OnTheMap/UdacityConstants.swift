@@ -56,6 +56,7 @@ extension UdacityClient {
     struct HTTPMethods {
         static let GET = "GET"
         static let POST = "POST"
+        static let DELETE = "DELETE"
     }
     
     // MARK: JSONResponseKeys

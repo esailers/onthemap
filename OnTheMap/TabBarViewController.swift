@@ -22,11 +22,14 @@ class TabBarViewController: UITabBarController {
         // Do any additional setup after loading the view.
     }
 
-
     // MARK: - Actions
     
     @IBAction func logoutTapped(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+        
+        UdacityClient.logOut() {
+            success in
+            success ? self.dismissViewControllerAnimated(true, completion: nil) : print("There was a logout error")
+        }
     }
 
 }

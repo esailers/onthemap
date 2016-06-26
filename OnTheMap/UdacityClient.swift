@@ -16,7 +16,7 @@ class UdacityClient {
     // SessionID for the student logged in
     var sessionID = ""
     
-    // MARK: - Login method
+    // MARK: - Login
     
     class func logIn(username: String, password: String, didComplete: (success: Bool, errorMessage: String?) -> Void) {
         
@@ -53,6 +53,44 @@ class UdacityClient {
             
             let errorMessage: String? = success ? nil : "The email or password was not valid."
             didComplete(success: success, errorMessage: errorMessage)
+        }
+        task.resume()
+    }
+    
+    // MARK: - Logout
+    
+    class func logOut(didComplete: (success: Bool) -> Void) {
+        
+        let url = sharedInstance().urlForMethod(Methods.Session)
+        let request = NSMutableURLRequest(URL: url)
+        
+        request.HTTPMethod = HTTPMethods.DELETE
+        
+        var xsrfCookie: NSHTTPCookie? = nil
+        let sharedCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
+        for cookie in sharedCookieStorage.cookies! as [NSHTTPCookie] {
+            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
+        }
+        if let xsrfCookie = xsrfCookie {
+            request.addValue(xsrfCookie.value, forHTTPHeaderField: HeaderKeys.XSRFToken)
+        }
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+            (data, response, error) in
+            
+            guard error == nil else {
+                print("There was an error")
+                didComplete(success: false)
+                return
+            }
+            
+            guard let data = data else {
+                print("No data was returned by the request")
+                return
+            }
+            
+            data.subdataWithRange(NSMakeRange(5, data.length - 5))
+            didComplete(success: true)
         }
         task.resume()
     }
