@@ -12,7 +12,7 @@ class ListViewController: UIViewController {
     
     // MARK: - Properties
     
-    let listDataSource = ListDataSource()
+    var listDataSource: ListDataSource?
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: - UIViewController lifecycle
@@ -20,6 +20,7 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        listDataSource = ListDataSource()
         tableView.dataSource = listDataSource
         tableView.delegate = listDataSource
     }
