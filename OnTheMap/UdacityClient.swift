@@ -23,7 +23,7 @@ class UdacityClient {
         let url = sharedInstance().urlForMethod(Methods.Session)
         let request = NSMutableURLRequest(URL: url)
         
-        request.HTTPMethod = HTTPMethods.POST
+        request.HTTPMethod = HTTPMethod.POST.rawValue
         request.addValue(HeaderValues.JSON, forHTTPHeaderField: HeaderKeys.Accept)
         request.addValue(HeaderValues.JSON, forHTTPHeaderField: HeaderKeys.ContentType)
         let body = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}"
@@ -64,7 +64,7 @@ class UdacityClient {
         let url = sharedInstance().urlForMethod(Methods.Session)
         let request = NSMutableURLRequest(URL: url)
         
-        request.HTTPMethod = HTTPMethods.DELETE
+        request.HTTPMethod = HTTPMethod.DELETE.rawValue
         
         var xsrfCookie: NSHTTPCookie? = nil
         let sharedCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()

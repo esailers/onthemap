@@ -136,7 +136,7 @@
         <!--List-->
         <scene sceneID="FAu-Ia-LqH">
             <objects>
-                <viewController id="NmR-oG-7eW" sceneMemberID="viewController">
+                <viewController id="NmR-oG-7eW" customClass="ListViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ECd-Gn-ar0"/>
                         <viewControllerLayoutGuide type="bottom" id="4xI-1K-DSG"/>
@@ -144,9 +144,50 @@
                     <view key="view" contentMode="scaleToFill" id="4i4-VV-sxb">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DB7-sk-MrS">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentLocationCell" textLabel="SP1-nI-iI5" detailTextLabel="cnq-8c-rRt" style="IBUITableViewCellStyleSubtitle" id="7vo-AU-VfN">
+                                        <rect key="frame" x="0.0" y="92" width="600" height="60"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7vo-AU-VfN" id="VDY-bw-Hba">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="59.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SP1-nI-iI5">
+                                                    <rect key="frame" x="15" y="14" width="31.5" height="19.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cnq-8c-rRt">
+                                                    <rect key="frame" x="15" y="33.5" width="40.5" height="13.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="DB7-sk-MrS" secondAttribute="trailing" id="Bty-BP-pws"/>
+                            <constraint firstItem="DB7-sk-MrS" firstAttribute="leading" secondItem="4i4-VV-sxb" secondAttribute="leading" id="DUC-aq-CG7"/>
+                            <constraint firstItem="4xI-1K-DSG" firstAttribute="top" secondItem="DB7-sk-MrS" secondAttribute="bottom" id="lKG-Ll-aaa"/>
+                            <constraint firstItem="DB7-sk-MrS" firstAttribute="top" secondItem="4i4-VV-sxb" secondAttribute="top" id="ycp-CF-s3F"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="List" image="list" id="QLb-NV-nJq"/>
+                    <connections>
+                        <outlet property="tableView" destination="DB7-sk-MrS" id="Dif-Nj-QnP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NK8-NM-iIY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -155,7 +196,7 @@
         <!--Map-->
         <scene sceneID="d8H-ny-mLf">
             <objects>
-                <viewController id="7hd-hs-NeO" sceneMemberID="viewController">
+                <viewController id="7hd-hs-NeO" customClass="MapViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="S5D-u1-sE7"/>
                         <viewControllerLayoutGuide type="bottom" id="JWg-4N-c3k"/>

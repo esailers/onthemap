@@ -6,6 +6,10 @@
 //  Copyright © 2016 Expressive Solutions. All rights reserved.
 //
 
+enum HTTPMethod: String {
+    case GET, POST, PUT, DELETE
+}
+
 extension UdacityClient {
 
     // MARK: Signup
@@ -55,14 +59,6 @@ extension UdacityClient {
         static let Udacity = "udacity"
         static let Username = "username"
         static let Password = "password"
-    }
-    
-    // MARK: HTTPMethods
-    
-    struct HTTPMethods {
-        static let GET = "GET"
-        static let POST = "POST"
-        static let DELETE = "DELETE"
     }
     
     // MARK: JSONResponseKeys
