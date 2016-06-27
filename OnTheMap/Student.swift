@@ -10,9 +10,9 @@ struct Student {
     
     // MARK: - Properties
     
-    var firstName: String
-    var lastName: String
-    var mediaURL: String
+    var firstName: String = ""
+    var lastName: String = ""
+    var mediaURL: String = ""
 
     // MARK: - Methods
     

@@ -95,6 +95,50 @@ class UdacityClient {
         task.resume()
     }
     
+    // MARK: - Get student detail
+    
+    func getStudentDetail(didComplete: (success: Bool) -> Void) {
+        
+        let url = urlForMethod(Methods.Users) // Maybe need to add variable key on end of url
+        let request = NSURLRequest(URL: url)
+        
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+            (data, response, error) in
+            
+            guard error == nil else {
+                print("There was an error")
+                didComplete(success: false)
+                return
+            }
+            
+            guard let data = data else {
+                print("No data was returned by the request")
+                return
+            }
+            
+            let trimmedData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+            
+            var studentData = [String: AnyObject]()
+            do {
+                studentData = try NSJSONSerialization.JSONObjectWithData(trimmedData, options: .AllowFragments) as! [String: AnyObject]
+            } catch {
+                //
+            }
+            
+            let studentDictionary = studentData[JSONResponseKeys.Student] as! [String: AnyObject]
+            let firstName = studentDictionary[JSONResponseKeys.FirstName] as! String
+            let lastName = studentDictionary[JSONResponseKeys.LastName] as! String
+            
+            var student = Student()
+            student.firstName = firstName
+            student.lastName = lastName
+            
+            didComplete(success: true)
+        }
+        task.resume()
+    }
+    
     // MARK: - Parse JSON
     
     private func parseStudentData(data: NSData) -> Bool {
@@ -112,6 +156,11 @@ class UdacityClient {
         
         key = account["key"] as! String
         sessionID = session["id"] as! String
+        /*
+        getStudentDetail { (success) in
+            //
+        }
+        */
  
         return success
     }
