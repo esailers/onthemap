@@ -13,7 +13,7 @@ class ListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
     // MARK: Properties
     
     let CellIdentifier = "StudentLocationCell"
-    let pinImageString = "pin"
+    let pinImageName = "pin"
     
     // MARK: UITableViewDataSource
     
@@ -25,7 +25,7 @@ class ListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier, forIndexPath: indexPath)
         cell.textLabel?.text = "Student"
         cell.detailTextLabel?.text = "url"
-        cell.imageView?.image = UIImage(named: pinImageString)
+        cell.imageView?.image = UIImage(named: pinImageName)
         
         return cell
     }

@@ -204,9 +204,23 @@
                     <view key="view" contentMode="scaleToFill" id="khl-Pq-Qpg">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Y1w-Ig-elS">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                            </mapView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Y1w-Ig-elS" firstAttribute="top" secondItem="S5D-u1-sE7" secondAttribute="bottom" id="DIl-2j-NtD"/>
+                            <constraint firstItem="Y1w-Ig-elS" firstAttribute="leading" secondItem="khl-Pq-Qpg" secondAttribute="leading" id="P0g-JJ-V2J"/>
+                            <constraint firstAttribute="trailing" secondItem="Y1w-Ig-elS" secondAttribute="trailing" id="Ze2-xc-V1B"/>
+                            <constraint firstItem="JWg-4N-c3k" firstAttribute="top" secondItem="Y1w-Ig-elS" secondAttribute="bottom" id="biD-Qb-xHW"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" image="map" id="700-md-2DI"/>
+                    <connections>
+                        <outlet property="mapView" destination="Y1w-Ig-elS" id="5vS-tb-2KJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RJ7-O7-L1t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
