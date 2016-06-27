@@ -99,9 +99,11 @@ class UdacityClient {
     
     func getStudentDetail(didComplete: (success: Bool) -> Void) {
         
-        let url = urlForMethod(Methods.Users) // Maybe need to add variable key on end of url
+        let url = urlForMethod(Methods.Users)
         let request = NSURLRequest(URL: url)
         
+        // Maybe need to add variable key on end of url
+        //let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/users/\(self.key)")!)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
             (data, response, error) in
@@ -156,7 +158,9 @@ class UdacityClient {
         
         key = account["key"] as! String
         sessionID = session["id"] as! String
+        
         /*
+         // Currently crashing the app
         getStudentDetail { (success) in
             //
         }
