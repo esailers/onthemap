@@ -48,12 +48,8 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
                     return
                 }
                 
-                let placemark = placemarks?.first
-                let latitude = placemark?.location?.coordinate.latitude
-                let longitude = placemark?.location?.coordinate.longitude
-                if let latitude = latitude, longitude = longitude {
-                    let locationString = "\(latitude), \(longitude)"
-                    print(locationString)
+                if let placemark = placemarks?.first {
+                    self.mapView.showAnnotations([MKPlacemark(placemark: placemark)], animated: true)
                 }
             })
         }
