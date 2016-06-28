@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
@@ -191,7 +192,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NK8-NM-iIY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2587" y="82"/>
+            <point key="canvasLocation" x="2587" y="162"/>
         </scene>
         <!--Map-->
         <scene sceneID="d8H-ny-mLf">
@@ -236,6 +237,14 @@
                                 <action selector="logoutTapped:" destination="q9R-3o-euN" id="37t-iC-8Lx"/>
                             </connections>
                         </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="refresh" id="XC0-Hp-hRN"/>
+                            <barButtonItem image="pin" id="r4Q-FM-iq3">
+                                <connections>
+                                    <action selector="pinTapped:" destination="q9R-3o-euN" id="bfy-Na-cRZ"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="qJn-Or-jv8">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
@@ -251,10 +260,10 @@
             </objects>
             <point key="canvasLocation" x="1767" y="-248"/>
         </scene>
-        <!--View Controller-->
+        <!--Post Location View Controller-->
         <scene sceneID="d1s-Tb-cq1">
             <objects>
-                <viewController storyboardIdentifier="PostViewController" id="YDI-ri-MNf" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PostLocationViewController" id="YDI-ri-MNf" customClass="PostLocationViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vgb-fS-5q7"/>
                         <viewControllerLayoutGuide type="bottom" id="2pS-Da-Ntf"/>
@@ -262,17 +271,39 @@
                     <view key="view" contentMode="scaleToFill" id="Ras-yv-AyR">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Srn-nB-p1x">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="elf-AF-RWo"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="qLH-x0-lKK"/>
+                                    <barButtonItem title="Submit" id="68I-hS-Y3C"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Gb6-m4-p13"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2pS-Da-Ntf" firstAttribute="top" secondItem="Srn-nB-p1x" secondAttribute="bottom" id="fqc-ur-SPv"/>
+                            <constraint firstItem="Srn-nB-p1x" firstAttribute="leading" secondItem="Ras-yv-AyR" secondAttribute="leading" id="gfu-cu-Kcw"/>
+                            <constraint firstAttribute="trailing" secondItem="Srn-nB-p1x" secondAttribute="trailing" id="hcW-vY-iRL"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="NFs-K1-tIq">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="8lE-9F-t6g"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f1i-Ah-aIA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1767" y="550"/>
+            <point key="canvasLocation" x="1767" y="508"/>
         </scene>
     </scenes>
     <resources>
         <image name="list" width="32" height="32"/>
         <image name="map" width="32" height="32"/>
+        <image name="pin" width="32" height="32"/>
         <image name="udacity" width="256" height="256"/>
     </resources>
 </document>

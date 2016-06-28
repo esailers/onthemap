@@ -13,13 +13,12 @@ class TabBarViewController: UITabBarController {
     // MARK: - Properties
     
     
-    
     // MARK: - UIViewController lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        navigationItem.title = "On the Map"
     }
 
     // MARK: - Actions
@@ -30,6 +29,16 @@ class TabBarViewController: UITabBarController {
             success in
             success ? self.dismissViewControllerAnimated(true, completion: nil) : print("There was a logout error")
         }
+    }
+    
+    @IBAction func pinTapped(sender: UIBarButtonItem) {
+        
+        if let storyboard = storyboard {
+            let postLocationVC = storyboard.instantiateViewControllerWithIdentifier("PostLocationViewController")
+            let navController = UINavigationController(rootViewController: postLocationVC)
+            presentViewController(navController, animated: true, completion: nil)
+        }
+        
     }
 
 }
