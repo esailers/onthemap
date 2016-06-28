@@ -7,27 +7,33 @@
 //
 
 import UIKit
+import MapKit
 
 class PostLocationViewController: UIViewController {
     
     // MARK: - Properties
     
-    var cancelBarButton: UIBarButtonItem!
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var findButton: UIButton!
+    @IBOutlet weak var toolbar: UIToolbar!
+    @IBOutlet weak var mapView: MKMapView!
     
     // MARK: - UIViewController lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        cancelBarButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(self.cancelTapped(_:)))
-        navigationItem.leftBarButtonItem = cancelBarButton
-        
         navigationItem.title = "Where are you studying?"
     }
-
-    // MARK: - Dismiss view controller
     
-    func cancelTapped(sender: UIBarButtonItem) {
+    // MARK: - Actions
+    
+    @IBAction func findTapped(sender: UIButton) {
+        textField.resignFirstResponder()
+    }
+    
+    @IBAction func cancelTapped(sender: UIBarButtonItem) {
+        textField.resignFirstResponder()
         dismissViewControllerAnimated(true, completion: nil)
     }
 
