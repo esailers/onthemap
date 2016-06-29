@@ -35,14 +35,12 @@ class UdacityClient {
             
             guard error == nil else {
                 print("There was an error")
-                return
+                return completion(success: false, errorMessage: "Cannot connect. Please check your Internet connection.")
             }
-            
-            let errorMessage = "The email or password was not valid."
             
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
                 print("There was a response other than 2XX")
-                return completion(success: false, errorMessage: errorMessage)
+                return completion(success: false, errorMessage: "The email or password was not valid.")
             }
             
             guard let data = data else {
@@ -53,8 +51,7 @@ class UdacityClient {
             let trimmedData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
             let success = sharedInstance().parseStudentData(trimmedData)
             
-            //let errorMessage: String? = success ? nil : "The email or password was not valid."
-            completion(success: success, errorMessage: errorMessage)
+            completion(success: success, errorMessage: nil)
         }
         task.resume()
     }
