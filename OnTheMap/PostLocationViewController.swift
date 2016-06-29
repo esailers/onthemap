@@ -40,14 +40,19 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
         }
         
         if let text = textField.text {
+            
+            if text.isEmpty {
+                alertForError(Errors.MapStringEmpty)
+            }
+            
             geocoder?.geocodeAddressString(text, completionHandler: {
                 (placemarks, error) in
                 
                 guard error == nil else {
-                    self.alertForError("Please input a location.")
+                    self.alertForError(Errors.CouldNotGeocode)
                     return
                 }
-                
+   
                 if let placemark = placemarks?.first {
                     self.mapView.showAnnotations([MKPlacemark(placemark: placemark)], animated: true)
                 }

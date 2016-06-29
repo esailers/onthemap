@@ -72,7 +72,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             if let urlToOpen = view.annotation?.subtitle, urlForAnnotation = NSURL(string: urlToOpen!) {
                 UIApplication.sharedApplication().openURL(urlForAnnotation)
             } else {
-                alertForError(UdacityClient.Errors.CannotOpenURL)
+                alertForError(Errors.CannotOpenURL)
             }
         }
     }

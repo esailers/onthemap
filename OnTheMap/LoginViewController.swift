@@ -96,6 +96,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             activityIndicator = nil
         case .Active:
             activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+            activityIndicator?.color = UIColor.blackColor()
             activityIndicator?.center = view.center
             activityIndicator?.hidden = false
             activityIndicator?.startAnimating()
