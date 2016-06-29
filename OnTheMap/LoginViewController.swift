@@ -30,14 +30,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         emailTextField.delegate = self
         passwordTextField.delegate = self
     }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        if activityIndicator != nil {
-            configureLoginState(.Inactive)
-        }
-    }
 
     override func viewDidLayoutSubviews() {
         gradientView.gradientWithColors(kColorYellowOrange, kColorOrange)
@@ -48,8 +40,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBAction func loginTapped(sender: UIButton) {
         print("Email is: \(emailTextField.text)")
         print("Password is: \(passwordTextField.text)")
-        login()
         
+        login()
         if activityIndicator == nil {
             configureLoginState(.Active)
         }
@@ -65,18 +57,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     private func login() {
         if let username = emailTextField.text, password = passwordTextField.text {
-            
                 UdacityClient.logIn(username, password: password) {
                     (success, errorMessage) in
                     dispatch_async(dispatch_get_main_queue()) {
                         if success {
                             self.performSegueWithIdentifier(StoryboardSegue.kSegueToTabBar, sender: self)
                         } else {
-                            if self.activityIndicator != nil {
-                                self.configureLoginState(.Inactive)
-                            }
                             self.alertForError(errorMessage!)
                         }
+                        self.configureLoginState(.Inactive)
                     }
                 }
         }
