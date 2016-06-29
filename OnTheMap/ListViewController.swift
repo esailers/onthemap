@@ -30,19 +30,26 @@ class ListViewController: UIViewController {
         super.viewWillAppear(animated)
         reloadData()
     }
+    
+    // MARK: - Reload data
 
     func reloadData() {
         UdacityClient.sharedInstance().getStudentLocations {
             (users, error) in
-            if let usersData = users {
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.appDelegate.studentsData = usersData
-                    self.tableView.reloadData()
-                })
-            } else {
-                if error != nil {
-                    print("There's an error")
-                }
+            
+            guard error == nil else {
+                print("There was an error")
+                return
+            }
+            
+            guard let usersData = users else {
+                print("No data was returned")
+                return
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.appDelegate.studentsData = usersData
+                self.tableView.reloadData()
             }
         }
     }

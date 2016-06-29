@@ -24,7 +24,7 @@ struct StudentInformation {
         mediaURL = dictionary[UdacityClient.JSONResponseKeys.MediaUrl] as! String
     }
     
-    static func convertFromDictionaries(array: [[String : AnyObject]]) -> [StudentInformation] {
+    static func convertFromDictionaries(array: [[String: AnyObject]]) -> [StudentInformation] {
         var resultArray = [StudentInformation]()
         
         for dictionary in array {

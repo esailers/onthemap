@@ -35,15 +35,20 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     func reloadData() {
         UdacityClient.sharedInstance().getStudentLocations {
             (users, error) in
-            if let usersData =  users {
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.appDelegate.studentsData = usersData
-                    self.createAnnotations(usersData, mapView: self.mapView)
-                })
-            } else {
-                if error != nil {
-                    print("New error")
-                }
+            
+            guard error == nil else {
+                print("There was an error")
+                return
+            }
+            
+            guard let usersData = users else {
+                print("No data was returned")
+                return
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.appDelegate.studentsData = usersData
+                self.createAnnotations(usersData, mapView: self.mapView)
             }
         }
     }
@@ -94,10 +99,12 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Alert
     
     private func alertForError(message: String) {
-        let alertController = UIAlertController(title: "", message: message, preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
-        alertController.addAction(cancelAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        dispatch_async(dispatch_get_main_queue()) {
+            let alertController = UIAlertController(title: "", message: message, preferredStyle: .Alert)
+            let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
     }
 
 }
