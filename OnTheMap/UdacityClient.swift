@@ -18,7 +18,7 @@ class UdacityClient {
     
     // MARK: - Login
     
-    class func logIn(username: String, password: String, didComplete: (success: Bool, errorMessage: String?) -> Void) {
+    class func logIn(username: String, password: String, completion: (success: Bool, errorMessage: String?) -> Void) {
         
         let url = sharedInstance().urlForMethod(Methods.Session)
         let request = NSMutableURLRequest(URL: url)
@@ -38,9 +38,11 @@ class UdacityClient {
                 return
             }
             
+            let errorMessage = "The email or password was not valid."
+            
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
                 print("There was a response other than 2XX")
-                return
+                return completion(success: false, errorMessage: errorMessage)
             }
             
             guard let data = data else {
@@ -51,15 +53,15 @@ class UdacityClient {
             let trimmedData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
             let success = sharedInstance().parseStudentData(trimmedData)
             
-            let errorMessage: String? = success ? nil : "The email or password was not valid."
-            didComplete(success: success, errorMessage: errorMessage)
+            //let errorMessage: String? = success ? nil : "The email or password was not valid."
+            completion(success: success, errorMessage: errorMessage)
         }
         task.resume()
     }
     
     // MARK: - Logout
     
-    class func logOut(didComplete: (success: Bool) -> Void) {
+    class func logOut(completion: (success: Bool) -> Void) {
         
         let url = sharedInstance().urlForMethod(Methods.Session)
         let request = NSMutableURLRequest(URL: url)
@@ -80,7 +82,7 @@ class UdacityClient {
             
             guard error == nil else {
                 print("There was an error")
-                didComplete(success: false)
+                completion(success: false)
                 return
             }
             
@@ -90,14 +92,14 @@ class UdacityClient {
             }
             
             data.subdataWithRange(NSMakeRange(5, data.length - 5))
-            didComplete(success: true)
+            completion(success: true)
         }
         task.resume()
     }
     
     // MARK: - Get student detail
     
-    func getStudentDetail(didComplete: (success: Bool) -> Void) {
+    func getStudentDetail(completion: (success: Bool) -> Void) {
         
         let url = urlForMethod(Methods.Users)
         let request = NSURLRequest(URL: url)
@@ -110,7 +112,7 @@ class UdacityClient {
             
             guard error == nil else {
                 print("There was an error")
-                didComplete(success: false)
+                completion(success: false)
                 return
             }
             
@@ -136,7 +138,7 @@ class UdacityClient {
             student.firstName = firstName
             student.lastName = lastName
             
-            didComplete(success: true)
+            completion(success: true)
         }
         task.resume()
     }

@@ -48,11 +48,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     private func login() {
         if let username = emailTextField.text, password = passwordTextField.text {
             
-                UdacityClient.logIn(username, password: password) { (success, errorMessage) in
-                    if success {
-                        self.performSegueWithIdentifier(StoryboardSegue.kSegueToTabBar, sender: self)
-                    } else {
-                        print(errorMessage)
+                UdacityClient.logIn(username, password: password) {
+                    (success, errorMessage) in
+                    dispatch_async(dispatch_get_main_queue()) {
+                        if success {
+                            self.performSegueWithIdentifier(StoryboardSegue.kSegueToTabBar, sender: self)
+                        } else {
+                            self.alertForError(errorMessage!)
+                        }
                     }
                 }
         }
@@ -76,6 +79,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     private struct StoryboardSegue {
         static let kSegueToTabBar = "segueToTabBar"
+    }
+    
+    // MARK: - Alert
+    
+    private func alertForError(message: String) {
+        let alertController = UIAlertController(title: "Login", message: message, preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 
 }

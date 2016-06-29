@@ -72,7 +72,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             if let urlToOpen = view.annotation?.subtitle, urlForAnnotation = NSURL(string: urlToOpen!) {
                 UIApplication.sharedApplication().openURL(urlForAnnotation)
             } else {
-                presentAlert(UdacityClient.Errors.CannotOpenURL)
+                alertForError(UdacityClient.Errors.CannotOpenURL)
             }
         }
     }
@@ -109,7 +109,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     // MARK: - Alert
     
-    private func presentAlert(message: String) {
+    private func alertForError(message: String) {
         let alertController = UIAlertController(title: "", message: message, preferredStyle: .Alert)
         let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
         alertController.addAction(cancelAction)

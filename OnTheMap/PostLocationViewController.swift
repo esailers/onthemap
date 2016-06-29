@@ -44,7 +44,7 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
                 (placemarks, error) in
                 
                 guard error == nil else {
-                    print("There was an error")
+                    self.alertForError("Please input a location.")
                     return
                 }
                 
@@ -65,6 +65,15 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    // MARK: - Alert
+    
+    private func alertForError(message: String) {
+        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 
 }
