@@ -47,7 +47,7 @@ extension UdacityClient {
     struct Methods {
         static let Session = "/session"
         static let Users = "/users"
-        static let limit : String = ""
+        static let limit: String = ""
     }
     
     // MARK: Cookies
