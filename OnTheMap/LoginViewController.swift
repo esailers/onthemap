@@ -10,10 +10,6 @@ import UIKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
-    // MARK: - Login state
-    
-    private enum LoginState { case Inactive, Active }
-    
     // MARK: - Properties
     
     @IBOutlet weak var gradientView: GradientView!
@@ -26,6 +22,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        activityIndicator?.color = UIColor.blackColor()
+        activityIndicator?.center = view.center
+        view.addSubview(activityIndicator!)
 
         emailTextField.delegate = self
         passwordTextField.delegate = self
@@ -42,9 +43,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         print("Password is: \(passwordTextField.text)")
         
         login()
-        if activityIndicator == nil {
-            configureLoginState(.Active)
-        }
+        configureActivityState(.Active, activityIndicator: activityIndicator!)
     }
     
     @IBAction func signupTapped(sender: UIButton) {
@@ -65,7 +64,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         } else {
                             self.alertForError(errorMessage!)
                         }
-                        self.configureLoginState(.Inactive)
+                        configureActivityState(.Inactive, activityIndicator: self.activityIndicator!)
                     }
                 }
         }
@@ -73,26 +72,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         emailTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
     }
-    
-    // MARK: - Configure LoginState
-    
-    private func configureLoginState(state: LoginState) {
-        
-        switch state {
-        case .Inactive:
-            activityIndicator?.hidden = true
-            activityIndicator?.stopAnimating()
-            activityIndicator = nil
-        case .Active:
-            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-            activityIndicator?.color = UIColor.blackColor()
-            activityIndicator?.center = view.center
-            activityIndicator?.hidden = false
-            activityIndicator?.startAnimating()
-            view.addSubview(activityIndicator!)
-        }
-    }
-    
+   
     // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {

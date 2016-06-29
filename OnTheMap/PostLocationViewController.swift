@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 
 class PostLocationViewController: UIViewController, UITextFieldDelegate {
-    
+
     // MARK: - Properties
     
     @IBOutlet weak var textField: UITextField!
@@ -19,6 +19,7 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     var geocoder: CLGeocoder? = nil
+    var activityIndicator: UIActivityIndicatorView? = nil
     
     // MARK: - UIViewController lifecycle
 
@@ -26,6 +27,11 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         textField.delegate = self
+        
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        activityIndicator?.color = UIColor.blackColor()
+        activityIndicator?.center = view.center
+        view.addSubview(activityIndicator!)
 
         navigationItem.title = "Where are you studying?"
     }
@@ -35,28 +41,34 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
     @IBAction func findTapped(sender: UIButton) {
         textField.resignFirstResponder()
         
-        if geocoder == nil {
-            geocoder = CLGeocoder()
-        }
-        
         if let text = textField.text {
             
             if text.isEmpty {
                 alertForError(Errors.MapStringEmpty)
+                return
             }
             
-            geocoder?.geocodeAddressString(text, completionHandler: {
-                (placemarks, error) in
+            configureActivityState(.Active, activityIndicator: activityIndicator!)
+            
+            delay(1.5) {
+                if self.geocoder == nil {
+                    self.geocoder = CLGeocoder()
+                }
                 
-                guard error == nil else {
-                    self.alertForError(Errors.CouldNotGeocode)
-                    return
-                }
-   
-                if let placemark = placemarks?.first {
-                    self.mapView.showAnnotations([MKPlacemark(placemark: placemark)], animated: true)
-                }
-            })
+                self.geocoder?.geocodeAddressString(text, completionHandler: {
+                    (placemarks, error) in
+                    
+                    guard error == nil else {
+                        self.alertForError(Errors.CouldNotGeocode)
+                        return
+                    }
+                    
+                    if let placemark = placemarks?.first {
+                        configureActivityState(.Inactive, activityIndicator: self.activityIndicator!)
+                        self.mapView.showAnnotations([MKPlacemark(placemark: placemark)], animated: true)
+                    }
+                })
+            }
         }
     }
     
@@ -75,10 +87,24 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Alert
     
     private func alertForError(message: String) {
-        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
-        alertController.addAction(cancelAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        dispatch_async(dispatch_get_main_queue()) {
+            configureActivityState(.Inactive, activityIndicator: self.activityIndicator!)
+            let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .Alert)
+            let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    // MARK: - Delay
+    
+    func delay(delay:Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(delay * Double(NSEC_PER_SEC))
+            ),
+            dispatch_get_main_queue(), closure)
     }
 
 }

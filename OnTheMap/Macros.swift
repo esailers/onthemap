@@ -24,3 +24,21 @@ struct Errors {
     static let CannotOpenURL = "Cannot open URL."
     static let CouldNotUpdateStudentLocations = "Could not update student locations."
 }
+
+// MARK: Activity State
+
+enum ActivityState { case Inactive, Active }
+
+// MARK: Configure activity state
+
+func configureActivityState(state: ActivityState, activityIndicator: UIActivityIndicatorView) {
+    
+    switch state {
+    case .Inactive:
+        activityIndicator.stopAnimating()
+        activityIndicator.hidden = true
+    case .Active:
+        activityIndicator.startAnimating()
+        activityIndicator.hidden = false
+    }
+}
