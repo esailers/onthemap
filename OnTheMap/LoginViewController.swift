@@ -16,6 +16,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
+    var activityIndicator: UIActivityIndicatorView? = nil
+    
     // MARK: - UIViewController lifecycle
 
     override func viewDidLoad() {
@@ -23,6 +25,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
         emailTextField.delegate = self
         passwordTextField.delegate = self
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        if activityIndicator != nil {
+            activityIndicator?.hidden = true
+            activityIndicator?.stopAnimating()
+            activityIndicator = nil
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -35,6 +47,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         print("Email is: \(emailTextField.text)")
         print("Password is: \(passwordTextField.text)")
         login()
+        
+        if activityIndicator == nil {
+            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+            activityIndicator?.center = view.center
+            activityIndicator?.hidden = false
+            activityIndicator?.startAnimating()
+            view.addSubview(activityIndicator!)
+        }
     }
     
     @IBAction func signupTapped(sender: UIButton) {
@@ -54,6 +74,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         if success {
                             self.performSegueWithIdentifier(StoryboardSegue.kSegueToTabBar, sender: self)
                         } else {
+                            if self.activityIndicator != nil {
+                                self.activityIndicator?.hidden = true
+                                self.activityIndicator?.stopAnimating()
+                                self.activityIndicator = nil
+                            }
                             self.alertForError(errorMessage!)
                         }
                     }
