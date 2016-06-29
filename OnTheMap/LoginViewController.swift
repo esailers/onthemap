@@ -10,6 +10,10 @@ import UIKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
+    // MARK: - Login state
+    
+    private enum LoginState { case Inactive, Active }
+    
     // MARK: - Properties
     
     @IBOutlet weak var gradientView: GradientView!
@@ -31,9 +35,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         super.viewDidDisappear(animated)
         
         if activityIndicator != nil {
-            activityIndicator?.hidden = true
-            activityIndicator?.stopAnimating()
-            activityIndicator = nil
+            configureLoginState(.Inactive)
         }
     }
 
@@ -49,11 +51,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         login()
         
         if activityIndicator == nil {
-            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-            activityIndicator?.center = view.center
-            activityIndicator?.hidden = false
-            activityIndicator?.startAnimating()
-            view.addSubview(activityIndicator!)
+            configureLoginState(.Active)
         }
     }
     
@@ -75,9 +73,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                             self.performSegueWithIdentifier(StoryboardSegue.kSegueToTabBar, sender: self)
                         } else {
                             if self.activityIndicator != nil {
-                                self.activityIndicator?.hidden = true
-                                self.activityIndicator?.stopAnimating()
-                                self.activityIndicator = nil
+                                self.configureLoginState(.Inactive)
                             }
                             self.alertForError(errorMessage!)
                         }
@@ -87,6 +83,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         emailTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
+    }
+    
+    // MARK: - Configure LoginState
+    
+    private func configureLoginState(state: LoginState) {
+        
+        switch state {
+        case .Inactive:
+            activityIndicator?.hidden = true
+            activityIndicator?.stopAnimating()
+            activityIndicator = nil
+        case .Active:
+            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+            activityIndicator?.center = view.center
+            activityIndicator?.hidden = false
+            activityIndicator?.startAnimating()
+            view.addSubview(activityIndicator!)
+        }
     }
     
     // MARK: - UITextFieldDelegate
