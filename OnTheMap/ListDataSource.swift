@@ -14,17 +14,22 @@ class ListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     let CellIdentifier = "StudentLocationCell"
     let pinImageName = "pin"
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     // MARK: UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return appDelegate.studentsData.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier, forIndexPath: indexPath)
-        cell.textLabel?.text = "Student"
-        cell.detailTextLabel?.text = "url"
+        
+        let fullName = appDelegate.studentsData[indexPath.row].fullName()
+        let mediaURL = appDelegate.studentsData[indexPath.row].mediaURL
+        
+        cell.textLabel?.text = fullName
+        cell.detailTextLabel?.text = mediaURL
         cell.imageView?.image = UIImage(named: pinImageName)
         
         return cell
@@ -34,9 +39,8 @@ class ListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        print("Row \(indexPath.row) selected")
-        if let urlForSignup = NSURL(string: UdacityClient.Signup.urlForSignup) {
-            UIApplication.sharedApplication().openURL(urlForSignup)
+        if let mediaURL = NSURL(string: appDelegate.studentsData[indexPath.row].mediaURL) {
+            UIApplication.sharedApplication().openURL(mediaURL)
         }
     }
     

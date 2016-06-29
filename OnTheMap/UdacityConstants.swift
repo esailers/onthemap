@@ -18,6 +18,22 @@ extension UdacityClient {
         static let urlForSignup = "https://www.udacity.com/account/auth#!/signup"
     }
     
+    // MARK: - Constants
+    
+    struct Constants {
+        static let parseAppId: String = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
+        static let parseApiKey: String = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
+        
+        static let UdacityBaseURL: String = "https://www.udacity.com/api/"
+        static let ParseBaseURL: String = "https://api.parse.com/1/classes/StudentLocation"
+    }
+    
+    // MARK: - Request to server
+    struct RequestToServer {
+        static let udacity: String = "udacity"
+        static let parse: String = "parse"
+    }
+    
     // MARK: Components
     
     struct Components {
@@ -31,6 +47,7 @@ extension UdacityClient {
     struct Methods {
         static let Session = "/session"
         static let Users = "/users"
+        static let limit : String = ""
     }
     
     // MARK: Cookies
@@ -59,6 +76,15 @@ extension UdacityClient {
         static let Udacity = "udacity"
         static let Username = "username"
         static let Password = "password"
+        
+        // Parse
+        static let UniqueKey = "uniqueKey"
+        static let FirstName = "firstName"
+        static let LastName = "lastName"
+        static let MapString = "mapString"
+        static let MediaURL = "mediaURL"
+        static let Latitude = "latitude"
+        static let Longitude = "longitude"
     }
     
     // MARK: JSONResponseKeys
@@ -70,8 +96,11 @@ extension UdacityClient {
         static let Session = "session"
         static let Error = "error"
         static let Student = "student"
-        static let FirstName = "first_name"
-        static let LastName = "last_name"
+        static let FirstName = "firstName"
+        static let LastName = "lastName"
+        static let Latitude = "latitude"
+        static let Longitude = "longitude"
+        static let MediaUrl = "mediaURL"
     }
 
 }

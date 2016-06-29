@@ -15,6 +15,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     let pinIdentifier = "pinIdentifier"
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     // MARK: - UIViewController lifecycle
 
@@ -22,30 +23,43 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
 
         mapView.delegate = self
-        
-        let locations = sampleData()
-        var annotations = [MKPointAnnotation]()
-        
-        for dictionary in locations {
-            
-            let lat = CLLocationDegrees(dictionary["latitude"] as! Double)
-            let long = CLLocationDegrees(dictionary["longitude"] as! Double)
-            
-            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            
-            let first = dictionary["firstName"] as! String
-            let last = dictionary["lastName"] as! String
-            let mediaURL = dictionary["mediaURL"] as! String
-            
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            annotation.title = "\(first) \(last)"
-            annotation.subtitle = mediaURL
-            
-            annotations.append(annotation)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadData()
+    }
+    
+    // MARK: - Reload data
+    
+    func reloadData() {
+        UdacityClient.sharedInstance().getStudentLocations {
+            (users, error) in
+            if let usersData =  users {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.appDelegate.studentsData = usersData
+                    self.createAnnotations(usersData, mapView: self.mapView)
+                })
+            } else {
+                if error != nil {
+                    print("New error")
+                }
+            }
         }
-        
-        self.mapView.addAnnotations(annotations)
+    }
+    
+    // MARK: - Set pin locations
+    
+    func createAnnotations(users: [StudentInformation], mapView: MKMapView) {
+        for user in users {
+            let annotation = MKPointAnnotation()
+            
+            annotation.coordinate = CLLocationCoordinate2DMake(user.latitude, user.longitude)
+            annotation.title = user.fullName()
+            annotation.subtitle = user.mediaURL
+            
+            mapView.addAnnotation(annotation)
+        }
     }
 
     // MARK: - MKMapViewDelegate
@@ -76,37 +90,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
-    
-    // MARK: - Sample Data
-    
-    func sampleData() -> [[String: AnyObject]] {
-        return [
-            [
-                "createdAt" : "2015-02-24T22:30:54.442Z",
-                "firstName" : "Jason",
-                "lastName" : "Schatz",
-                "latitude" : 37.7617,
-                "longitude" : -122.4216,
-                "mapString" : "18th and Valencia, San Francisco, CA",
-                "mediaURL" : "http://en.wikipedia.org/wiki/Swift_%28programming_language%29",
-                "objectId" : "hiz0vOTmrL",
-                "uniqueKey" : 2362758535,
-                "updatedAt" : "2015-03-10T17:20:31.828Z"
-            ], [
-                "createdAt" : "2015-02-24T22:35:30.639Z",
-                "firstName" : "Gabrielle",
-                "lastName" : "Miller-Messner",
-                "latitude" : 35.1740471,
-                "longitude" : -79.3922539,
-                "mapString" : "Southern Pines, NC",
-                "mediaURL" : "http://www.linkedin.com/pub/gabrielle-miller-messner/11/557/60/en",
-                "objectId" : "8ZEuHF5uX8",
-                "uniqueKey" : 2256298598,
-                "updatedAt" : "2015-03-11T03:23:49.582Z"
-            ]
-        ]
-    }
-    
+ 
     // MARK: - Alert
     
     private func alertForError(message: String) {

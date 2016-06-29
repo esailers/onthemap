@@ -56,6 +56,118 @@ class UdacityClient {
         task.resume()
     }
     
+    func taskForGETMethod(server: String, method: String, parameters: [String : AnyObject], completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
+        
+        /* Set the parameters */
+        let mutableParameters = parameters
+        
+        /* Set server base url */
+        var baseUrl : String = ""
+        if (server == RequestToServer.udacity) {
+            baseUrl = Constants.UdacityBaseURL
+        } else if (server == RequestToServer.parse) {
+            baseUrl = Constants.ParseBaseURL
+        }
+        
+        /* Build the URL and configure the request */
+        let urlString = baseUrl + method + UdacityClient.escapedParameters(mutableParameters)
+        let url = NSURL(string: urlString)!
+        let request = NSMutableURLRequest(URL: url)
+        
+        if (server == RequestToServer.parse) {
+            request.addValue(Constants.parseAppId, forHTTPHeaderField: "X-Parse-Application-Id")
+            request.addValue(Constants.parseApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+        
+        /* Make the request */
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {data, response, downloadError in
+            
+            /* Parse the data and use the data (happens in completion handler) */
+            if downloadError != nil {
+                completionHandler(result: nil, error: downloadError)
+            } else {
+                var newData: NSData?
+                newData = nil
+                if (server == RequestToServer.udacity) {
+                    newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5))
+                }
+                if newData != nil {
+                    UdacityClient.parseJSONWithCompletionHandler(newData!, completionHandler: completionHandler)
+                }
+                else {
+                    UdacityClient.parseJSONWithCompletionHandler(data!, completionHandler: completionHandler)
+                }
+            }
+        }
+        
+        /* Start the request */
+        task.resume()
+        
+        return task
+    }
+    
+    /* Helper: Given raw JSON, return a usable Foundation object */
+    class func parseJSONWithCompletionHandler(data: NSData, completionHandler: (result: AnyObject!, error: NSError?) -> Void) {
+        
+        var parsingError: NSError? = nil
+        
+        let parsedResult: AnyObject?
+        do {
+            parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
+        } catch let error as NSError {
+            parsingError = error
+            parsedResult = nil
+        }
+        
+        if let error = parsingError {
+            completionHandler(result: nil, error: error)
+        } else {
+            completionHandler(result: parsedResult, error: nil)
+        }
+    }
+    
+    class func escapedParameters(parameters: [String : AnyObject]) -> String {
+        
+        var urlVars = [String]()
+        
+        for (key, value) in parameters {
+            if(!key.isEmpty) {
+                /* Make sure that it is a string value */
+                let stringValue = "\(value)"
+                
+                /* Escape it */
+                let escapedValue = stringValue.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+                
+                /* Append it */
+                urlVars += [key + "=" + "\(escapedValue!)"]
+            }
+            
+            
+        }
+        
+        return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
+    }
+
+    func getStudentLocations(completionHandler: (result: [StudentInformation]?, error: NSError?) -> Void) {
+        
+        // make the request
+        let task = taskForGETMethod(UdacityClient.RequestToServer.parse, method: Methods.limit, parameters: ["limit":200]) { (result, error) -> Void in
+            if error != nil {
+                completionHandler(result: nil, error: error)
+            }
+            else {
+                if let locations = result as? [NSObject: NSObject] {
+                    if let usersResult = locations["results"] as? [[String : AnyObject]] {
+                        let studentsData = StudentInformation.convertFromDictionaries(usersResult)
+                        completionHandler(result: studentsData, error: nil)
+                    }
+                }
+            }
+        }
+        task.resume()
+    }
+    
     // MARK: - Logout
     
     class func logOut(completion: (success: Bool) -> Void) {
