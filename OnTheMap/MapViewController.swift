@@ -33,7 +33,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Reload data
     
     func reloadData() {
-        UdacityClient.sharedInstance().getStudentLocations {
+        ParseClient.sharedInstance().getStudentLocations {
             (users, error) in
             
             guard error == nil else {

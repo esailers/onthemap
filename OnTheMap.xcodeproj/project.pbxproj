@@ -19,6 +19,8 @@
 		124190271D21AF3700DBC82A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 124190261D21AF3700DBC82A /* MapKit.framework */; };
 		1241902A1D222E3700DBC82A /* PostLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124190291D222E3700DBC82A /* PostLocationViewController.swift */; };
 		1241902C1D245B6100DBC82A /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1241902B1D245B6100DBC82A /* StudentInformation.swift */; };
+		1241902E1D25371E00DBC82A /* ParseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1241902D1D25371E00DBC82A /* ParseClient.swift */; };
+		124190301D25373700DBC82A /* ParseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1241902F1D25373700DBC82A /* ParseConstants.swift */; };
 		12ADD01C1D1B3446000D4325 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12ADD01B1D1B3446000D4325 /* AppDelegate.swift */; };
 		12ADD0211D1B3446000D4325 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12ADD01F1D1B3446000D4325 /* Main.storyboard */; };
 		12ADD0231D1B3447000D4325 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12ADD0221D1B3447000D4325 /* Assets.xcassets */; };
@@ -41,6 +43,8 @@
 		124190261D21AF3700DBC82A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		124190291D222E3700DBC82A /* PostLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostLocationViewController.swift; sourceTree = "<group>"; };
 		1241902B1D245B6100DBC82A /* StudentInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
+		1241902D1D25371E00DBC82A /* ParseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseClient.swift; sourceTree = "<group>"; };
+		1241902F1D25373700DBC82A /* ParseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseConstants.swift; sourceTree = "<group>"; };
 		12ADD0181D1B3446000D4325 /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12ADD01B1D1B3446000D4325 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		12ADD0201D1B3446000D4325 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -120,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				12418FDF1D1C4B1900DBC82A /* Udacity */,
+				124190311D25389400DBC82A /* Parse */,
 			);
 			name = Clients;
 			sourceTree = "<group>";
@@ -140,6 +145,15 @@
 			);
 			name = Frameworks;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		124190311D25389400DBC82A /* Parse */ = {
+			isa = PBXGroup;
+			children = (
+				1241902D1D25371E00DBC82A /* ParseClient.swift */,
+				1241902F1D25373700DBC82A /* ParseConstants.swift */,
+			);
+			name = Parse;
 			sourceTree = "<group>";
 		};
 		12ADD00F1D1B3446000D4325 = {
@@ -254,6 +268,7 @@
 				1241902C1D245B6100DBC82A /* StudentInformation.swift in Sources */,
 				12ADD0301D1B3F41000D4325 /* LoginViewController.swift in Sources */,
 				1241902A1D222E3700DBC82A /* PostLocationViewController.swift in Sources */,
+				1241902E1D25371E00DBC82A /* ParseClient.swift in Sources */,
 				12ADD0321D1B41CD000D4325 /* Macros.swift in Sources */,
 				12418FD41D1C469800DBC82A /* StudentLocation.swift in Sources */,
 				12ADD01C1D1B3446000D4325 /* AppDelegate.swift in Sources */,
@@ -261,6 +276,7 @@
 				12418FD01D1C444D00DBC82A /* Student.swift in Sources */,
 				12418FE71D214D5300DBC82A /* ListDataSource.swift in Sources */,
 				12418FD21D1C463300DBC82A /* Location.swift in Sources */,
+				124190301D25373700DBC82A /* ParseConstants.swift in Sources */,
 				12418FE11D1C56C200DBC82A /* TabBarViewController.swift in Sources */,
 				12ADD02E1D1B3E82000D4325 /* GradientView.swift in Sources */,
 			);

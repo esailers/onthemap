@@ -17,11 +17,11 @@ struct StudentInformation {
     var studentId = ""
     
     init(dictionary: [String: AnyObject]) {
-        firstName = dictionary[UdacityClient.JSONResponseKeys.FirstName] as! String
-        lastName = dictionary[UdacityClient.JSONResponseKeys.LastName] as! String
-        latitude = dictionary[UdacityClient.JSONResponseKeys.Latitude] as! CLLocationDegrees
-        longitude = dictionary[UdacityClient.JSONResponseKeys.Longitude] as! CLLocationDegrees
-        mediaURL = dictionary[UdacityClient.JSONResponseKeys.MediaUrl] as! String
+        firstName = dictionary[ParseClient.JSONResponseKeys.FirstName] as! String
+        lastName = dictionary[ParseClient.JSONResponseKeys.LastName] as! String
+        latitude = dictionary[ParseClient.JSONResponseKeys.Latitude] as! CLLocationDegrees
+        longitude = dictionary[ParseClient.JSONResponseKeys.Longitude] as! CLLocationDegrees
+        mediaURL = dictionary[ParseClient.JSONResponseKeys.MediaURL] as! String
     }
     
     static func convertFromDictionaries(array: [[String: AnyObject]]) -> [StudentInformation] {

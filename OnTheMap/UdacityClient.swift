@@ -21,13 +21,12 @@ class UdacityClient {
     class func logIn(username: String, password: String, completion: (success: Bool, errorMessage: String?) -> Void) {
         
         let url = sharedInstance().urlForMethod(Methods.Session)
-        let request = NSMutableURLRequest(URL: url)
         
+        let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = HTTPMethod.POST.rawValue
         request.addValue(HeaderValues.JSON, forHTTPHeaderField: HeaderKeys.Accept)
         request.addValue(HeaderValues.JSON, forHTTPHeaderField: HeaderKeys.ContentType)
         let body = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}"
-        
         request.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
@@ -52,102 +51,6 @@ class UdacityClient {
             let success = sharedInstance().parseStudentData(trimmedData)
             
             completion(success: success, errorMessage: nil)
-        }
-        task.resume()
-    }
-    
-    func taskForGETMethod(method: String, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
-        
-        let baseURL = "https://api.parse.com/1/classes/StudentLocation"
-        
-        /* Build the URL and configure the request */
-        let urlString = baseURL + method + UdacityClient.escapedParameters([:])
-        let url = NSURL(string: urlString)!
-        
-        let request = NSMutableURLRequest(URL: url)
-        request.addValue(Constants.parseAppId, forHTTPHeaderField: "X-Parse-Application-Id")
-        request.addValue(Constants.parseApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        /* Make the request */
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
-            (data, response, downloadError) in
-            
-            guard downloadError == nil else {
-                return completionHandler(result: nil, error: downloadError)
-            }
-            
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                return completionHandler(result: nil, error: downloadError)
-            }
-            
-            guard let data = data else {
-                return completionHandler(result: nil, error: downloadError)
-            }
-            
-            UdacityClient.parseJSONWithCompletionHandler(data, completionHandler: completionHandler)
-        }
-        
-        return task
-    }
-    
-    /* Helper: Given raw JSON, return a usable Foundation object */
-    class func parseJSONWithCompletionHandler(data: NSData, completionHandler: (result: AnyObject!, error: NSError?) -> Void) {
-        
-        var parsingError: NSError? = nil
-        
-        let parsedResult: AnyObject?
-        do {
-            parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-        } catch let error as NSError {
-            parsingError = error
-            parsedResult = nil
-        }
-        
-        if let error = parsingError {
-            completionHandler(result: nil, error: error)
-        } else {
-            completionHandler(result: parsedResult, error: nil)
-        }
-    }
-    
-    class func escapedParameters(parameters: [String : AnyObject]) -> String {
-        
-        var urlVars = [String]()
-        
-        for (key, value) in parameters {
-            if(!key.isEmpty) {
-                /* Make sure that it is a string value */
-                let stringValue = "\(value)"
-                
-                /* Escape it */
-                let escapedValue = stringValue.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
-                
-                /* Append it */
-                urlVars += [key + "=" + "\(escapedValue!)"]
-            }
-        }
-        
-        return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
-    }
-
-    func getStudentLocations(completionHandler: (result: [StudentInformation]?, error: NSError?) -> Void) {
-        
-        let task = taskForGETMethod(Methods.limit) {
-            (result, error) in
-            
-            guard error == nil else {
-                return completionHandler(result: nil, error: error)
-            }
-            
-            guard let result = result else {
-                return completionHandler(result: nil, error: error)
-            }
-            
-            let locations = result as? [NSObject: NSObject]
-            let usersResult = locations!["results"] as? [[String: AnyObject]]
-            let studentsData = StudentInformation.convertFromDictionaries(usersResult!)
-            completionHandler(result: studentsData, error: nil)
         }
         task.resume()
     }
