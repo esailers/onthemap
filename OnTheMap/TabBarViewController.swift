@@ -24,7 +24,6 @@ class TabBarViewController: UITabBarController {
     // MARK: - Actions
     
     @IBAction func logoutTapped(sender: UIBarButtonItem) {
-        
         UdacityClient.logOut() {
             success in
             success ? self.dismissViewControllerAnimated(true, completion: nil) : print("There was a logout error")
@@ -32,13 +31,22 @@ class TabBarViewController: UITabBarController {
     }
     
     @IBAction func pinTapped(sender: UIBarButtonItem) {
-        
         if let storyboard = storyboard {
             let postLocationVC = storyboard.instantiateViewControllerWithIdentifier("PostLocationViewController")
             let navController = UINavigationController(rootViewController: postLocationVC)
             presentViewController(navController, animated: true, completion: nil)
         }
         
+    }
+    
+    @IBAction func refreshTapped(sender: UIBarButtonItem) {
+        selectedIndex == 0 ? postNotificationName("refreshMap") : postNotificationName("refreshList")
+    }
+    
+    // MARK: - Helpers
+    
+    func postNotificationName(name: String) {
+        NSNotificationCenter.defaultCenter().postNotificationName(name, object: nil)
     }
 
 }

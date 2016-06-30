@@ -222,7 +222,11 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="refresh" id="XC0-Hp-hRN"/>
+                            <barButtonItem systemItem="refresh" id="XC0-Hp-hRN">
+                                <connections>
+                                    <action selector="refreshTapped:" destination="q9R-3o-euN" id="PXT-me-yu4"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem image="pin" id="r4Q-FM-iq3">
                                 <connections>
                                     <action selector="pinTapped:" destination="q9R-3o-euN" id="bfy-Na-cRZ"/>

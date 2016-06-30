@@ -24,6 +24,8 @@ class ListViewController: UIViewController {
         listDataSource = ListDataSource()
         tableView.dataSource = listDataSource
         tableView.delegate = listDataSource
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.refreshListData(_:)), name:"refreshList", object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -32,6 +34,11 @@ class ListViewController: UIViewController {
     }
     
     // MARK: - Reload data
+    
+    func refreshListData(notification: NSNotification) {
+        print("LVC - data refreshed")
+        reloadData()
+    }
 
     func reloadData() {
         ParseClient.sharedInstance().getStudentLocations {

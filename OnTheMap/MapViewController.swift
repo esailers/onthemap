@@ -23,6 +23,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
 
         mapView.delegate = self
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.refreshMapData(_:)), name:"refreshMap", object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -31,6 +33,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     // MARK: - Reload data
+    
+    func refreshMapData(notification: NSNotification) {
+        print("MVC - data refreshed")
+        reloadData()
+    }
     
     func reloadData() {
         ParseClient.sharedInstance().getStudentLocations {
