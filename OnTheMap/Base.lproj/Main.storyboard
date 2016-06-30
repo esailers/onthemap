@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="FuB-aG-Ofc">
-                                <rect key="frame" x="20" y="40" width="560" height="380"/>
+                                <rect key="frame" x="20" y="110" width="560" height="380"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="udacity" translatesAutoresizingMaskIntoConstraints="NO" id="buj-MG-2oO">
                                         <rect key="frame" x="0.0" y="0.0" width="560" height="150"/>
@@ -86,9 +86,16 @@
                         <constraints>
                             <constraint firstItem="Wde-3V-JB2" firstAttribute="top" secondItem="FuB-aG-Ofc" secondAttribute="bottom" constant="180" id="7Sl-i7-KjL"/>
                             <constraint firstAttribute="trailing" secondItem="FuB-aG-Ofc" secondAttribute="trailing" constant="20" id="ITr-8q-U6s"/>
+                            <constraint firstItem="FuB-aG-Ofc" firstAttribute="centerY" secondItem="s0N-5D-6E0" secondAttribute="centerY" id="R9s-Yg-tZb"/>
                             <constraint firstItem="FuB-aG-Ofc" firstAttribute="top" secondItem="MSG-y4-UWI" secondAttribute="bottom" constant="20" id="dl4-pj-bIT"/>
                             <constraint firstItem="FuB-aG-Ofc" firstAttribute="leading" secondItem="s0N-5D-6E0" secondAttribute="leading" constant="20" id="o1a-v6-d74"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="dl4-pj-bIT"/>
+                                <exclude reference="7Sl-i7-KjL"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="emailTextField" destination="N2E-L2-QYu" id="IyA-M9-k3m"/>

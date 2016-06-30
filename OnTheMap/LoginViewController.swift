@@ -34,6 +34,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         emailTextField.delegate = self
         passwordTextField.delegate = self
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
 
     override func viewDidLayoutSubviews() {
         gradientView.gradientWithColors(kColorYellowOrange, kColorOrange)
@@ -91,6 +105,31 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     private struct StoryboardSegue {
         static let kSegueToTabBar = "segueToTabBar"
+    }
+    
+    // MARK: - UIKeyboardWillShowNotification
+    
+    func keyboardWillShow(notification: NSNotification) {
+        // If you begin editing the bottomTextField, the view goes up
+        if emailTextField.editing || passwordTextField.editing {
+            view.frame.origin.y = getKeyboardHeight(notification) * -1
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        // If you end editing the bottomTextField, the view goes back down
+        if emailTextField.editing || passwordTextField.editing {
+            view.frame.origin.y = 0
+        }
+    }
+    
+    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
+        var keyboardHeight = CGFloat()
+        if let userInfo = notification.userInfo {
+            let keyboardSize = userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue
+            keyboardHeight = keyboardSize.CGRectValue().height
+        }
+        return keyboardHeight
     }
     
     // MARK: - Alert
