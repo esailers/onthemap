@@ -37,12 +37,12 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             (users, error) in
             
             guard error == nil else {
-                print("There was an error")
+                self.alertForError("There was an error.")
                 return
             }
             
             guard let usersData = users else {
-                print("No data was returned")
+                self.alertForError("No data was returned.")
                 return
             }
             
