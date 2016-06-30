@@ -12,11 +12,9 @@ class ParseClient {
 
     // MARK: - Start request to get student locations
     
-    private func taskForGETMethod(method: String, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
+    private func taskForGETMethod(completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         
-        let baseURL = "https://api.parse.com/1/classes/StudentLocation"
-        let urlString = baseURL + method + escapedParameters([:])
-        let url = NSURL(string: urlString)!
+        let url = urlForMethod(Methods.limit)
         
         let request = NSMutableURLRequest(URL: url)
         request.addValue(HeaderValues.AppId, forHTTPHeaderField: HeaderKeys.AppId)
@@ -44,29 +42,6 @@ class ParseClient {
         return task
     }
     
-    // MARK: - Escaped parameters
-    
-    private func escapedParameters(parameters: [String : AnyObject]) -> String {
-        
-        var urlVars = [String]()
-        
-        for (key, value) in parameters {
-            if(!key.isEmpty) {
-                /* Make sure that it is a string value */
-                let stringValue = "\(value)"
-                
-                /* Escape it */
-                let escapedValue = stringValue.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
-                
-                /* Append it */
-                urlVars += [key + "=" + "\(escapedValue!)"]
-            }
-        }
-        
-        return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
-    }
-    
-    
     // MARK: - Parse JSON
     
     private func parseJSONWithCompletionHandler(data: NSData, completionHandler: (result: AnyObject!, error: NSError?) -> Void) {
@@ -92,7 +67,7 @@ class ParseClient {
     
     func getStudentLocations(completionHandler: (result: [StudentInformation]?, error: NSError?) -> Void) {
         
-        let task = self.taskForGETMethod(Methods.limit) {
+        let task = self.taskForGETMethod {
             (result, error) in
             
             guard error == nil else {
@@ -116,9 +91,10 @@ class ParseClient {
     private func urlForMethod(method: String?, withPathExtension: String? = nil, parameters: [String: AnyObject]? = nil) -> NSURL {
         
         let components = NSURLComponents()
+        let objects = Objects.StudentLocation
         components.scheme = Components.Scheme
         components.host = Components.Host
-        components.path = Components.Path + (method ?? "") + (withPathExtension ?? "")
+        components.path = Components.Path + (method ?? "") + (withPathExtension ?? "") + objects
         components.queryItems = [NSURLQueryItem]()
         
         if let parameters = parameters {
