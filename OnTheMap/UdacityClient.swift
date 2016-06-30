@@ -6,12 +6,9 @@
 //  Copyright © 2016 Expressive Solutions. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class UdacityClient {
-    
-    // Key for the student logged in
-    var key = ""
     
     // SessionID for the student logged in
     var sessionID = ""
@@ -108,7 +105,8 @@ class UdacityClient {
         let account = studentData[JSONResponseKeys.Account] as! [String: AnyObject]
         let session = studentData[JSONResponseKeys.Session] as! [String: AnyObject]
         
-        key = account["key"] as! String
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDelegate.studentKey = account["key"] as! String
         sessionID = session["id"] as! String
  
         return success
