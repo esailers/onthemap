@@ -27,7 +27,6 @@ extension ParseClient {
     struct Methods {
         static let Session = "/session"
         static let Users = "/users"
-        static let limit = ""
     }
 
     // MARK: Objects

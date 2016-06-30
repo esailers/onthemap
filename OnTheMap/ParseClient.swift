@@ -14,7 +14,11 @@ class ParseClient {
     
     private func taskForGETMethod(completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         
-        let url = urlForMethod(Methods.limit)
+        let parameters: [String: AnyObject] = [
+            ParameterKeys.Limit: ParameterValues.OneHundred,
+            ParameterKeys.Order: ParameterValues.MostRecentlyUpdated
+        ]
+        let url = urlForGETMethod(parameters: parameters)
         
         let request = NSMutableURLRequest(URL: url)
         request.addValue(HeaderValues.AppId, forHTTPHeaderField: HeaderKeys.AppId)
@@ -88,13 +92,13 @@ class ParseClient {
     
     // MARK: - Construct URL
     
-    private func urlForMethod(method: String?, withPathExtension: String? = nil, parameters: [String: AnyObject]? = nil) -> NSURL {
+    private func urlForGETMethod(withPathExtension: String? = nil, parameters: [String: AnyObject]? = nil) -> NSURL {
         
         let components = NSURLComponents()
         let objects = Objects.StudentLocation
         components.scheme = Components.Scheme
         components.host = Components.Host
-        components.path = Components.Path + (method ?? "") + (withPathExtension ?? "") + objects
+        components.path = Components.Path + (withPathExtension ?? "") + objects
         components.queryItems = [NSURLQueryItem]()
         
         if let parameters = parameters {
