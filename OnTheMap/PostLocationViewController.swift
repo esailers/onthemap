@@ -14,9 +14,8 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Properties
     
     @IBOutlet weak var textField: UITextField!
-    @IBOutlet weak var findButton: UIButton!
-    @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var mapView: MKMapView!
+    var rightBarButton: UIBarButtonItem!
     
     var geocoder: CLGeocoder? = nil
     var activityIndicator: UIActivityIndicatorView? = nil
@@ -32,44 +31,57 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
         activityIndicator?.color = UIColor.blackColor()
         activityIndicator?.center = view.center
         view.addSubview(activityIndicator!)
+        
+        rightBarButton = UIBarButtonItem(title: "Find", style: .Plain, target: self, action: #selector(self.rightBarButtonTapped(_:)))
+        navigationItem.rightBarButtonItem = rightBarButton
 
         navigationItem.title = "Where are you studying?"
     }
     
     // MARK: - Actions
     
-    @IBAction func findTapped(sender: UIButton) {
+    func rightBarButtonTapped(sender: UIBarButtonItem) {
         textField.resignFirstResponder()
         
-        if let text = textField.text {
+        if rightBarButton.title == "Find" {
             
-            if text.isEmpty {
-                alertForError(Errors.MapStringEmpty)
-                return
-            }
-            
-            configureActivityState(.Active, activityIndicator: activityIndicator!)
-            
-            delay(1.5) {
-                if self.geocoder == nil {
-                    self.geocoder = CLGeocoder()
+            if let text = textField.text {
+                
+                if text.isEmpty {
+                    alertForError(Errors.MapStringEmpty)
+                    return
                 }
                 
-                self.geocoder?.geocodeAddressString(text, completionHandler: {
-                    (placemarks, error) in
-                    
-                    guard error == nil else {
-                        self.alertForError(Errors.CouldNotGeocode)
-                        return
+                configureActivityState(.Active, activityIndicator: activityIndicator!)
+                
+                delay(1.5) {
+                    if self.geocoder == nil {
+                        self.geocoder = CLGeocoder()
                     }
                     
-                    if let placemark = placemarks?.first {
-                        configureActivityState(.Inactive, activityIndicator: self.activityIndicator!)
-                        self.mapView.showAnnotations([MKPlacemark(placemark: placemark)], animated: true)
-                    }
-                })
+                    self.geocoder?.geocodeAddressString(text, completionHandler: {
+                        (placemarks, error) in
+                        
+                        guard error == nil else {
+                            self.alertForError(Errors.CouldNotGeocode)
+                            return
+                        }
+                        
+                        if let placemark = placemarks?.first {
+                            configureActivityState(.Inactive, activityIndicator: self.activityIndicator!)
+                            self.mapView.showAnnotations([MKPlacemark(placemark: placemark)], animated: true)
+                        }
+                    })
+                    self.rightBarButton.title = "Submit"
+                    self.textField.text = ""
+                    self.textField.placeholder = "Enter a link"
+                    self.navigationItem.title = "Ready to submit?"
+                }
             }
+        } else {
+            dismissViewControllerAnimated(true, completion: nil)
         }
+        
     }
     
     @IBAction func cancelTapped(sender: UIBarButtonItem) {
