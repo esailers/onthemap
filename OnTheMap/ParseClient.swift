@@ -107,9 +107,6 @@ class ParseClient {
         let bodyString = "{\"uniqueKey\": \"\(appDelegate.studentKey)\", \"firstName\": \"\(student.firstName)\", \"lastName\": \"\(student.lastName)\",\"mapString\": \"\(student.mapString)\", \"mediaURL\": \"\(student.mediaURL)\",\"latitude\": \(student.latitude), \"longitude\": \(student.longitude)}"
         request.HTTPBody = bodyString.dataUsingEncoding(NSUTF8StringEncoding)
         
-        // firstName and lastName are nil in the following output
-        print("\(appDelegate.studentKey), \(student.firstName), \(student.lastName), \(student.mapString), \(student.mediaURL), \(student.latitude), \(student.longitude)")
-        
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
             (data, response, error) in
             
