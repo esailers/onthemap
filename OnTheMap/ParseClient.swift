@@ -9,9 +9,6 @@
 import UIKit
 
 class ParseClient {
-    
-    var firstName = ""
-    var lastName = ""
 
     // MARK: - Start request to get student locations
     

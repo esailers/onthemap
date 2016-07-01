@@ -14,6 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     var studentKey = ""
+    var firstName = ""
+    var lastName = ""
     var studentsData: [StudentInformation] = [StudentInformation]()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {

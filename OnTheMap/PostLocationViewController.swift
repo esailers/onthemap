@@ -97,9 +97,11 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
                 
                 if let location = location {
                     
+                    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                    
                     let studentInformation = StudentInformation(dictionary: [
-                        ParseClient.HTTPBodyKeys.FirstName: ParseClient.sharedInstance().firstName,
-                        ParseClient.HTTPBodyKeys.LastName: ParseClient.sharedInstance().lastName,
+                        ParseClient.HTTPBodyKeys.FirstName: appDelegate.firstName,
+                        ParseClient.HTTPBodyKeys.LastName: appDelegate.lastName,
                         ParseClient.HTTPBodyKeys.Latitude: location.coordinate.latitude,
                         ParseClient.HTTPBodyKeys.Longitude: location.coordinate.longitude,
                         ParseClient.HTTPBodyKeys.MapString: mapString,

@@ -72,6 +72,9 @@ extension UdacityClient {
         static let Status = "status"
         static let Session = "session"
         static let Error = "error"
+        static let User = "user"
+        static let FirstName = "first_name"
+        static let LastName = "last_name"
     }
 
 }

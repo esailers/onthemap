@@ -12,6 +12,7 @@ class UdacityClient {
     
     // SessionID for the student logged in
     var sessionID = ""
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     // MARK: - Login
     
@@ -105,11 +106,55 @@ class UdacityClient {
         let account = studentData[JSONResponseKeys.Account] as! [String: AnyObject]
         let session = studentData[JSONResponseKeys.Session] as! [String: AnyObject]
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         appDelegate.studentKey = account["key"] as! String
         sessionID = session["id"] as! String
- 
+        getStudentData(appDelegate.studentKey) { (success, errorMessage) in
+            print("firstName: \(self.appDelegate.firstName), lastName: \(self.appDelegate.lastName)")
+        }
+        
         return success
+    }
+    
+    // MARK: - Get student data
+    
+    private func getStudentData(key: String, completion: (success: Bool, errorMessage: String?) -> Void) {
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/users/\(key)")!)
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+            (data, response, error) in
+            
+            guard error == nil else {
+                print("There was an error")
+                return completion(success: false, errorMessage: "Cannot connect. Please check your Internet connection.")
+            }
+            
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                print("There was a response other than 2XX")
+                return completion(success: false, errorMessage: "The email or password was not valid.")
+            }
+            
+            guard let data = data else {
+                print("No data was returned by the request")
+                return
+            }
+
+            let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+            var studentData = [String: AnyObject]()
+            do {
+                studentData = try NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments) as! [String: AnyObject]
+            } catch {
+                completion(success: false, errorMessage: "Error")
+            }
+            
+            let user = studentData["user"] as! [String: AnyObject]
+            let firstName = user["first_name"] as! String
+            let lastName = user["last_name"] as! String
+        
+            self.appDelegate.firstName = firstName
+            self.appDelegate.lastName = lastName
+            completion(success: true, errorMessage: "Error message goes here.")
+ 
+        }
+        task.resume()
     }
 
     // MARK: - Construct URL
