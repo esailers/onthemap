@@ -95,7 +95,7 @@ class ParseClient {
     
     // MARK: - Post student location
     
-    func postStudentLocation(latitude: Double, longitude: Double, mediaURL: String, mapString: String, completion: (success: Bool) -> Void) {
+    func postStudentLocation(latitude: Double, longitude: Double, mediaURL: String, mapString: String, completion: (success: Bool, errorMessage: String?) -> Void) {
         
         let url = urlForMethod()
         
@@ -114,11 +114,10 @@ class ParseClient {
             (data, response, error) in
             
             guard error == nil else {
-                completion(success: false)
-                return
+                return completion(success: false, errorMessage: "There was an error posting your location.")
             }
             
-            completion(success: true)
+            completion(success: true, errorMessage: nil)
         }
         task.resume()
     }

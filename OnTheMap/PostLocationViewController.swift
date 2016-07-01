@@ -106,12 +106,17 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
                 
                 if let location = location {
                     ParseClient.sharedInstance().postStudentLocation(location.coordinate.latitude, longitude: location.coordinate.longitude, mediaURL: link, mapString: mapString, completion: {
-                        (success) in
-                        
-                        self.dismissViewControllerAnimated(true, completion: nil)
+                        (success, errorMessage) in
+                        dispatch_async(dispatch_get_main_queue()) {
+                            if success {
+                                self.dismissViewControllerAnimated(true, completion: nil)
+                            } else {
+                                self.alertForError(errorMessage!)
+                            }
+                            
+                        }
                     })
                 }
-                
             }
         }
         
