@@ -10,8 +10,6 @@ import UIKit
 
 class UdacityClient {
     
-    // SessionID for the student logged in
-    var sessionID = ""
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     // MARK: - Login
@@ -106,8 +104,8 @@ class UdacityClient {
         let account = studentData[JSONResponseKeys.Account] as! [String: AnyObject]
         let session = studentData[JSONResponseKeys.Session] as! [String: AnyObject]
         
-        appDelegate.studentKey = account["key"] as! String
-        sessionID = session["id"] as! String
+        appDelegate.studentKey = account[JSONResponseKeys.StudentKey] as! String
+        appDelegate.sessionID = session[JSONResponseKeys.SessionID] as! String
         getStudentData(appDelegate.studentKey) { (success, errorMessage) in
             print("firstName: \(self.appDelegate.firstName), lastName: \(self.appDelegate.lastName)")
         }
@@ -118,18 +116,20 @@ class UdacityClient {
     // MARK: - Get student data
     
     private func getStudentData(key: String, completion: (success: Bool, errorMessage: String?) -> Void) {
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/users/\(key)")!)
+        
+        let url = urlForMethod(Methods.Users, withPathExtension: "/\(key)")
+        let request = NSMutableURLRequest(URL: url)
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
             (data, response, error) in
             
             guard error == nil else {
                 print("There was an error")
-                return completion(success: false, errorMessage: "Cannot connect. Please check your Internet connection.")
+                return completion(success: false, errorMessage: "There was an error.")
             }
             
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
                 print("There was a response other than 2XX")
-                return completion(success: false, errorMessage: "The email or password was not valid.")
+                return completion(success: false, errorMessage: "There was a response other than 2XX")
             }
             
             guard let data = data else {
@@ -145,9 +145,9 @@ class UdacityClient {
                 completion(success: false, errorMessage: "Error")
             }
             
-            let user = studentData["user"] as! [String: AnyObject]
-            let firstName = user["first_name"] as! String
-            let lastName = user["last_name"] as! String
+            let user = studentData[JSONResponseKeys.User] as! [String: AnyObject]
+            let firstName = user[JSONResponseKeys.FirstName] as! String
+            let lastName = user[JSONResponseKeys.LastName] as! String
         
             self.appDelegate.firstName = firstName
             self.appDelegate.lastName = lastName

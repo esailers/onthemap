@@ -17,6 +17,8 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var mapView: MKMapView!
     var rightBarButton: UIBarButtonItem!
     
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
     var geocoder: CLGeocoder? = nil
     var activityIndicator: UIActivityIndicatorView? = nil
     
@@ -96,8 +98,6 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
                 let link = text
                 
                 if let location = location {
-                    
-                    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
                     
                     let studentInformation = StudentInformation(dictionary: [
                         ParseClient.HTTPBodyKeys.FirstName: appDelegate.firstName,

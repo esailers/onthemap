@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     var studentKey = ""
+    var sessionID = ""
     var firstName = ""
     var lastName = ""
     var studentsData: [StudentInformation] = [StudentInformation]()
