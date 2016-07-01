@@ -20,6 +20,9 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
     var geocoder: CLGeocoder? = nil
     var activityIndicator: UIActivityIndicatorView? = nil
     
+    var mapString: String = ""
+    var location: CLLocation?
+    
     // MARK: - UIViewController lifecycle
 
     override func viewDidLoad() {
@@ -52,6 +55,8 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
                     return
                 }
                 
+                mapString = text
+                
                 configureActivityState(.Active, activityIndicator: activityIndicator!)
                 
                 delay(1.5) {
@@ -68,6 +73,16 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
                         }
                         
                         if let placemark = placemarks?.first {
+                            let _ = StudentInformation(dictionary: [
+                                ParseClient.HTTPBodyKeys.FirstName: ParseClient.sharedInstance().firstName,
+                                ParseClient.HTTPBodyKeys.LastName: ParseClient.sharedInstance().lastName,
+                                ParseClient.HTTPBodyKeys.Latitude: placemark.location!.coordinate.latitude,
+                                ParseClient.HTTPBodyKeys.Longitude: placemark.location!.coordinate.longitude,
+                                ParseClient.HTTPBodyKeys.MediaURL: ""
+                                ])
+                            
+                            self.location = placemark.location
+                            
                             configureActivityState(.Inactive, activityIndicator: self.activityIndicator!)
                             self.mapView.showAnnotations([MKPlacemark(placemark: placemark)], animated: true)
                         }
@@ -79,7 +94,25 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         } else {
-            dismissViewControllerAnimated(true, completion: nil)
+            
+            if let text = textField.text {
+                
+                if text.isEmpty {
+                    alertForError(Errors.MapStringEmpty)
+                    return
+                }
+                
+                let link = text
+                
+                if let location = location {
+                    ParseClient.sharedInstance().postStudentLocation(location.coordinate.latitude, longitude: location.coordinate.longitude, mediaURL: link, mapString: mapString, completion: {
+                        (success) in
+                        
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    })
+                }
+                
+            }
         }
         
     }

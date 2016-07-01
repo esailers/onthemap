@@ -6,10 +6,6 @@
 //  Copyright © 2016 Expressive Solutions. All rights reserved.
 //
 
-enum HTTPMethod: String {
-    case GET, POST, PUT, DELETE
-}
-
 extension UdacityClient {
 
     // MARK: Signup

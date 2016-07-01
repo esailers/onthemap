@@ -6,6 +6,10 @@
 //  Copyright © 2016 Expressive Solutions. All rights reserved.
 //
 
+enum HTTPMethod: String {
+    case GET, POST, PUT, DELETE
+}
+
 import UIKit
 
 let kColorOrange = UIColor(red: 1.00, green: 0.46, blue: 0.00, alpha: 1.0)
