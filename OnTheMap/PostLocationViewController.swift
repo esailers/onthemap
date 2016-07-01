@@ -97,15 +97,16 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
                 
                 if let location = location {
                     
-                    let _ = StudentInformation(dictionary: [
+                    let studentInformation = StudentInformation(dictionary: [
                         ParseClient.HTTPBodyKeys.FirstName: ParseClient.sharedInstance().firstName,
                         ParseClient.HTTPBodyKeys.LastName: ParseClient.sharedInstance().lastName,
                         ParseClient.HTTPBodyKeys.Latitude: location.coordinate.latitude,
                         ParseClient.HTTPBodyKeys.Longitude: location.coordinate.longitude,
+                        ParseClient.HTTPBodyKeys.MapString: mapString,
                         ParseClient.HTTPBodyKeys.MediaURL: link
                         ])
                     
-                    ParseClient.sharedInstance().postStudentLocation(location.coordinate.latitude, longitude: location.coordinate.longitude, mediaURL: link, mapString: mapString, completion: {
+                    ParseClient.sharedInstance().postStudentLocation(studentInformation, completion: {
                         (success, errorMessage) in
                         dispatch_async(dispatch_get_main_queue()) {
                             if success {

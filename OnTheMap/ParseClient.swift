@@ -95,7 +95,7 @@ class ParseClient {
     
     // MARK: - Post student location
     
-    func postStudentLocation(latitude: Double, longitude: Double, mediaURL: String, mapString: String, completion: (success: Bool, errorMessage: String?) -> Void) {
+    func postStudentLocation(student: StudentInformation, completion: (success: Bool, errorMessage: String?) -> Void) {
         
         let url = urlFromComponents()
         
@@ -107,8 +107,11 @@ class ParseClient {
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        let bodyString = "{\"uniqueKey\": \"\(appDelegate.studentKey)\", \"firstName\": \"\(self.firstName)\", \"lastName\": \"\(self.lastName)\",\"mapString\": \"\(mapString)\", \"mediaURL\": \"\(mediaURL)\",\"latitude\": \(latitude), \"longitude\": \(longitude)}"
+        let bodyString = "{\"uniqueKey\": \"\(appDelegate.studentKey)\", \"firstName\": \"\(student.firstName)\", \"lastName\": \"\(student.lastName)\",\"mapString\": \"\(student.mapString)\", \"mediaURL\": \"\(student.mediaURL)\",\"latitude\": \(student.latitude), \"longitude\": \(student.longitude)}"
         request.HTTPBody = bodyString.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        // firstName and lastName are nil in the following output
+        print("\(appDelegate.studentKey), \(student.firstName), \(student.lastName), \(student.mapString), \(student.mediaURL), \(student.latitude), \(student.longitude)")
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
             (data, response, error) in

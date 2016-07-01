@@ -13,6 +13,7 @@ struct StudentInformation {
     var lastName = ""
     var latitude = CLLocationDegrees()
     var longitude =  CLLocationDegrees()
+    var mapString = ""
     var mediaURL = ""
     
     init(dictionary: [String: AnyObject]) {
@@ -20,6 +21,7 @@ struct StudentInformation {
         lastName = dictionary[ParseClient.JSONResponseKeys.LastName] as! String
         latitude = dictionary[ParseClient.JSONResponseKeys.Latitude] as! CLLocationDegrees
         longitude = dictionary[ParseClient.JSONResponseKeys.Longitude] as! CLLocationDegrees
+        mapString = dictionary[ParseClient.JSONResponseKeys.MapString] as! String
         mediaURL = dictionary[ParseClient.JSONResponseKeys.MediaURL] as! String
     }
     
