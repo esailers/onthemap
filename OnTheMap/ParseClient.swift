@@ -21,7 +21,7 @@ class ParseClient {
             ParameterKeys.Limit: ParameterValues.OneHundred,
             ParameterKeys.Order: ParameterValues.MostRecentlyUpdated
         ]
-        let url = urlForMethod(parameters: parameters)
+        let url = urlFromComponents(parameters: parameters)
         
         let request = NSMutableURLRequest(URL: url)
         request.addValue(HeaderValues.AppId, forHTTPHeaderField: HeaderKeys.AppId)
@@ -97,7 +97,7 @@ class ParseClient {
     
     func postStudentLocation(latitude: Double, longitude: Double, mediaURL: String, mapString: String, completion: (success: Bool, errorMessage: String?) -> Void) {
         
-        let url = urlForMethod()
+        let url = urlFromComponents()
         
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = HTTPMethod.POST.rawValue
@@ -114,17 +114,48 @@ class ParseClient {
             (data, response, error) in
             
             guard error == nil else {
-                return completion(success: false, errorMessage: "There was an error posting your location.")
+                print("There was an error")
+                return completion(success: false, errorMessage: "There was an error.")
             }
             
-            completion(success: true, errorMessage: nil)
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                print("There was a response other than 2XX")
+                return completion(success: false, errorMessage: "There was a response other than 2XX.")
+            }
+            
+            guard let data = data else {
+                print("No data was returned by the request")
+                return completion(success: false, errorMessage: "No data was returned by the request.")
+            }
+            
+            let success = self.parseStudentData(data)
+            
+            completion(success: success, errorMessage: nil)
         }
         task.resume()
+
+    }
+    
+    // MARK: - Parse student data
+    
+    private func parseStudentData(data: NSData) -> Bool {
+        var success = true
+        
+        var studentData = [String: AnyObject]()
+        do {
+            studentData = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! [String: AnyObject]
+        } catch {
+            success = false
+        }
+
+        //
+        
+        return success
     }
     
     // MARK: - Construct URL
     
-    private func urlForMethod(withPathExtension: String? = nil, parameters: [String: AnyObject]? = nil) -> NSURL {
+    private func urlFromComponents(withPathExtension: String? = nil, parameters: [String: AnyObject]? = nil) -> NSURL {
         
         let components = NSURLComponents()
         let objects = Objects.StudentLocation
