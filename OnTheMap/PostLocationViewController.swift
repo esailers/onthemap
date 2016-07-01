@@ -73,16 +73,7 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
                         }
                         
                         if let placemark = placemarks?.first {
-                            let _ = StudentInformation(dictionary: [
-                                ParseClient.HTTPBodyKeys.FirstName: ParseClient.sharedInstance().firstName,
-                                ParseClient.HTTPBodyKeys.LastName: ParseClient.sharedInstance().lastName,
-                                ParseClient.HTTPBodyKeys.Latitude: placemark.location!.coordinate.latitude,
-                                ParseClient.HTTPBodyKeys.Longitude: placemark.location!.coordinate.longitude,
-                                ParseClient.HTTPBodyKeys.MediaURL: ""
-                                ])
-                            
                             self.location = placemark.location
-                            
                             configureActivityState(.Inactive, activityIndicator: self.activityIndicator!)
                             self.mapView.showAnnotations([MKPlacemark(placemark: placemark)], animated: true)
                         }
@@ -105,10 +96,20 @@ class PostLocationViewController: UIViewController, UITextFieldDelegate {
                 let link = text
                 
                 if let location = location {
+                    
+                    let _ = StudentInformation(dictionary: [
+                        ParseClient.HTTPBodyKeys.FirstName: ParseClient.sharedInstance().firstName,
+                        ParseClient.HTTPBodyKeys.LastName: ParseClient.sharedInstance().lastName,
+                        ParseClient.HTTPBodyKeys.Latitude: location.coordinate.latitude,
+                        ParseClient.HTTPBodyKeys.Longitude: location.coordinate.longitude,
+                        ParseClient.HTTPBodyKeys.MediaURL: link
+                        ])
+                    
                     ParseClient.sharedInstance().postStudentLocation(location.coordinate.latitude, longitude: location.coordinate.longitude, mediaURL: link, mapString: mapString, completion: {
                         (success, errorMessage) in
                         dispatch_async(dispatch_get_main_queue()) {
                             if success {
+                                print("Success")
                                 self.dismissViewControllerAnimated(true, completion: nil)
                             } else {
                                 self.alertForError(errorMessage!)
