@@ -9,12 +9,19 @@
 import MapKit
 
 struct StudentInformation {
+    
+    // MARK: - Properties
+    
     var firstName = ""
     var lastName = ""
     var latitude = CLLocationDegrees()
     var longitude =  CLLocationDegrees()
     var mapString = ""
     var mediaURL = ""
+    
+    static var studentsArray = [StudentInformation]()
+    
+    // MARK: - Initializer
     
     init(dictionary: [String: AnyObject]) {
         firstName = dictionary[ParseClient.JSONResponseKeys.FirstName] as! String
@@ -24,6 +31,8 @@ struct StudentInformation {
         mapString = dictionary[ParseClient.JSONResponseKeys.MapString] as! String
         mediaURL = dictionary[ParseClient.JSONResponseKeys.MediaURL] as! String
     }
+    
+    // MARK: - Methods
     
     static func convertFromDictionaries(array: [[String: AnyObject]]) -> [StudentInformation] {
         var resultArray = [StudentInformation]()

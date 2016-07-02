@@ -14,7 +14,6 @@ class ListViewController: UIViewController {
     
     var listDataSource: ListDataSource?
     @IBOutlet weak var tableView: UITableView!
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     // MARK: - UIViewController lifecycle
 
@@ -55,7 +54,7 @@ class ListViewController: UIViewController {
             }
             
             dispatch_async(dispatch_get_main_queue()) {
-                self.appDelegate.studentsData = usersData
+                StudentInformation.studentsArray = usersData
                 self.tableView.reloadData()
             }
         }

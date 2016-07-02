@@ -15,7 +15,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     let pinIdentifier = "pinIdentifier"
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     // MARK: - UIViewController lifecycle
 
@@ -54,7 +53,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             }
             
             dispatch_async(dispatch_get_main_queue()) {
-                self.appDelegate.studentsData = usersData
+                StudentInformation.studentsArray = usersData
                 self.createAnnotations(usersData, mapView: self.mapView)
             }
         }

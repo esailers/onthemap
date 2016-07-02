@@ -104,9 +104,9 @@ class UdacityClient {
         let account = studentData[JSONResponseKeys.Account] as! [String: AnyObject]
         let session = studentData[JSONResponseKeys.Session] as! [String: AnyObject]
         
-        appDelegate.studentKey = account[JSONResponseKeys.StudentKey] as! String
+        appDelegate.key = account[JSONResponseKeys.Key] as! String
         appDelegate.sessionID = session[JSONResponseKeys.SessionID] as! String
-        getStudentData(appDelegate.studentKey) { (success, errorMessage) in
+        getStudentData(appDelegate.key) { (success, errorMessage) in
             print("firstName: \(self.appDelegate.firstName), lastName: \(self.appDelegate.lastName)")
         }
         

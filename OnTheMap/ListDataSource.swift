@@ -14,19 +14,18 @@ class ListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     let CellIdentifier = "StudentLocationCell"
     let pinImageName = "pin"
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     // MARK: UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return appDelegate.studentsData.count
+        return StudentInformation.studentsArray.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier, forIndexPath: indexPath)
         
-        let fullName = appDelegate.studentsData[indexPath.row].fullName()
-        let mediaURL = appDelegate.studentsData[indexPath.row].mediaURL
+        let fullName = StudentInformation.studentsArray[indexPath.row].fullName()
+        let mediaURL = StudentInformation.studentsArray[indexPath.row].mediaURL
         
         cell.textLabel?.text = fullName
         cell.detailTextLabel?.text = mediaURL
@@ -39,7 +38,7 @@ class ListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        if let mediaURL = NSURL(string: appDelegate.studentsData[indexPath.row].mediaURL) {
+        if let mediaURL = NSURL(string: StudentInformation.studentsArray[indexPath.row].mediaURL) {
             UIApplication.sharedApplication().openURL(mediaURL)
         }
     }

@@ -104,7 +104,7 @@ class ParseClient {
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        let bodyString = "{\"uniqueKey\": \"\(appDelegate.studentKey)\", \"firstName\": \"\(student.firstName)\", \"lastName\": \"\(student.lastName)\",\"mapString\": \"\(student.mapString)\", \"mediaURL\": \"\(student.mediaURL)\",\"latitude\": \(student.latitude), \"longitude\": \(student.longitude)}"
+        let bodyString = "{\"uniqueKey\": \"\(appDelegate.key)\", \"firstName\": \"\(student.firstName)\", \"lastName\": \"\(student.lastName)\",\"mapString\": \"\(student.mapString)\", \"mediaURL\": \"\(student.mediaURL)\",\"latitude\": \(student.latitude), \"longitude\": \(student.longitude)}"
         request.HTTPBody = bodyString.dataUsingEncoding(NSUTF8StringEncoding)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
@@ -145,7 +145,7 @@ class ParseClient {
             success = false
         }
 
-        //
+        print(studentData)
         
         return success
     }
